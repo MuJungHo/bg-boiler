@@ -1,0 +1,12 @@
+{
+    "account": "帳號",
+    "close": "關閉",
+    "confirm": "確認",
+    "current-location": "目前在 {{page}}",
+    "home": "首頁",
+    "password": "密碼",
+    "login": "登入",
+    "keep-me": "記住我",
+    "user": "使用者",
+    "welcome": "歡迎"
+}
