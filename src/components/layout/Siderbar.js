@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    backgroundColor: theme.blue.delta
+    backgroundColor: theme.blue.dark
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9) + 1,
     },
-    backgroundColor: theme.blue.delta
+    backgroundColor: theme.blue.dark
   },
   node: {
     color: '#ffffff',
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   nodeActive: {
-    backgroundColor: theme.blue.dark
+    backgroundColor: theme.blue.delta
   }
 }));
 
@@ -94,7 +94,7 @@ const Siderbar = ({ open, setOpen }) => {
       }}
     >
       <div className={classes.toolbar}>
-        {open && <img style={{ width: 150, margin: 'auto' }} src={process.env.PUBLIC_URL + '/logo.svg'} alt="logo" />
+        {open && <img style={{ width: 150, margin: 'auto' }} src={process.env.PUBLIC_URL + '/delta-logo.png'} alt="logo" />
         }
         <IconButton edge="end" onClick={() => setOpen(!open)}>
           {open ? <ArrowBackIosIcon color="primary" /> : <ArrowForwardIosIcon color="primary" />}
