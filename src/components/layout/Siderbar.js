@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    backgroundColor: '#1d3654'
+    backgroundColor: theme.blue.delta
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9) + 1,
     },
-    backgroundColor: '#1d3654'
+    backgroundColor: theme.blue.delta
   },
   node: {
     color: '#ffffff',
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   nodeActive: {
-    backgroundColor: theme.palette.primary.main
+    backgroundColor: theme.blue.dark
   }
 }));
 

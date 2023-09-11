@@ -18,8 +18,8 @@ import {
 const useStyles = makeStyles(theme => ({
   container: {
     height: '100vh',
-    backgroundImage: 'radial-gradient(circle at 48% 33%, #0f72a4, #1d3654 96%)',
-    opacity: 0.9,
+    backgroundImage: `radial-gradient(circle at 50% 50%, ${theme.blue.delta}, ${theme.blue.dark} 150%)`,
+    opacity: 0.88,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'

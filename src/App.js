@@ -5,7 +5,6 @@ import { ThemeProvider } from '@material-ui/styles'
 import { AuthProvider } from "./contexts/AuthContext";
 import { GlobalProvider } from "./contexts/GlobalContext";
 import "./style/normalize.css"
-import 'rsuite/dist/styles/rsuite-default.css'
 
 const App = () => (
   <GlobalProvider>

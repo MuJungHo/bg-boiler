@@ -3,11 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Appbar from './Appbar'
 import Siderbar from './Siderbar'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     paddingTop: 80,
-    backgroundColor: '#f4f6f8',
+    backgroundColor: theme.grey.light,
     height: '100vh'
   }
 }));
