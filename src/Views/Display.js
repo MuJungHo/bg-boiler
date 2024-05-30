@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 // import { GlobalContext } from "../contexts/GlobalContext";
 import {
-  Breadcrumbs,
-  Radio,
-  Checkbox,
+  // Breadcrumbs,
+  // Radio,
+  // Checkbox,
   Text
 } from "../components/common";
 

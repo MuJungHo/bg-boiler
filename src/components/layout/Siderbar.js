@@ -139,7 +139,7 @@ const OpenMultiLevel = ({ route }) => {
   const classes = useStyles();
   const { children } = route;
   const { t } = useContext(GlobalContext);
-  const [open, setOpen] = React.useState(route.children.includes(location.pathname));
+  const [open, setOpen] = React.useState(route.children.findIndex(child => child.path === location.pathname) > -1);
 
   const handleClick = () => {
     setOpen((prev) => !prev);

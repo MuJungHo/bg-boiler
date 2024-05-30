@@ -1,7 +1,8 @@
 import Home from '../Views/Home';
 import User from "../Views/User";
 import Input from "../Views/Input";
-import Typography from "../Views/Typography";
+import Display from "../Views/Display";
+import Layout from "../Views/Layout";
 
 import {
   Component as ComponentIcon,
@@ -33,24 +34,33 @@ const routes = [
     icon: ComponentIcon,
     children: [
       {
-        path: "/typography",
-        name: "typography"
+        path: "/display",
+        name: "display"
       },
       {
         path: "/input",
         name: "input"
+      },
+      {
+        path: "/layout",
+        name: "layout"
       }
     ]
   },
   {
-    path: "/typography",
-    name: "typography",
-    component: Typography
+    path: "/display",
+    name: "display",
+    component: Display
   },
   {
     path: "/input",
     name: "input",
     component: Input
+  },
+  {
+    path: "/layout",
+    name: "layout",
+    component: Layout
   }
 ]
 
