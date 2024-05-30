@@ -20,7 +20,7 @@ const AppRouter = () => {
                 <route.component />
               </PrivateRoute>)
           }
-          <Redirect to='/' />
+          {/* <Redirect to='/' /> */}
         </Layout>
       </Switch>
     </BrowserRouter>
