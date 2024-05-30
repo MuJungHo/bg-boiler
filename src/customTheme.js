@@ -1,38 +1,74 @@
-import { createTheme } from '@material-ui/core/styles'
-
-const blue = {
-    light: '#5295FF',
-    dark: '#00288c',
-    delta: '#0087dc'
-}
-const grey = {
-    light: '#f8f8f8',
-    medium: '#bebebe',
-    dark: '#888888'
-}
-const typography = {
-    fontFamily: [
-        'Roboto',
-        'PingFang TC',
-        'Noto Sans TC',
-    ].join(',')
-}
 export const palette = {
-    primary: { main: '#0087dc', contrastText: '#fff' },
-    secondary: { main: '#4ACAAD', contrastText: '#fff' },
-    error: { main: '#F57182', contrastText: '#fff' },
-    warning: { main: '#F6B03C', contrastText: '#fff' },
-    light: { main: '#ffffff' },
-    boxShadow: ["unset", "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)"],
-    button: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)', hover: 'rgba(0, 0, 0, 0.2)' },
-    appbar: { background: '#fff', color: '#000', svg: '#000' },
-    dialog: { background: '#fff', color: '#000' },
-
-    siderbar: { background: '#5594c9', color: '#fff', active: "#3b86b1", hover: "rgba(59, 134, 177, .5)" },
+    primary: { main: "#0087dc", contrastText: '#fff' },
+    secondary: { main: '#b9eb5f', contrastText: '#fff' },
+    error: { main: '#E53B2F', contrastText: '#fff' },
+    warning: { main: '#FFD23F', contrastText: '#fff' },
 }
-export default createTheme({
-    typography,
-    blue,
-    grey,
-    palette
-})
+
+export const dark = {
+    900: '#001228',
+    800: '#0087dc',
+    700: '#0c1b2e',
+    500: '#142439',
+    400: '#1e2e42',
+    300: '#1c375a',
+}
+
+export const light = {
+    900: '#455263',
+    800: '#647386',
+    700: '#949FAC',
+    500: '#BECAD7',
+    400: '#ECEEEF',
+    300: '#ffffff',
+}
+
+export const blue = {
+    200: '#53bdff'
+}
+
+export const lighten_palette = {
+    primary: { main: '#53bdff', contrastText: '#fff', light: "#53bdff" },
+    secondary: { main: '#E53B2F', contrastText: '#fff' },
+    error: { main: '#f57182', contrastText: '#fff' },
+    warning: { main: '#f6b03c', contrastText: '#fff' },
+    light: { main: '#fff' },
+    appbar: { background: '#fff', color: '#000', svg: '#000' },
+    divider: "rgba(0, 0, 0, 0.12)",
+    boxShadow: ["unset", "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)"],
+    siderbar: { background: '#5594c9', color: '#fff', active: "#3b86b1", hover: "rgba(59, 134, 177, .5)" },
+    paper: { background: '#fff', color: '#000' },
+    dialog: { background: '#fff', color: '#000' },
+    layout: { background: '#eee', color: "#000" },
+    button: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)', hover: 'rgba(0, 0, 0, 0.2)' },
+    tab: { background: '#fff', color: '#53bdff' },
+    table: { background: '#fafafa', color: 'rgba(0, 0, 0, 0.87)', odd: "", even: "", border: '', disabled: 'rgba(0, 0, 0, 0.4)' },
+    action: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)' },
+    select: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)', },
+    pagination: { color: 'rgba(0, 0, 0, 0.87)', disabled: 'rgba(0, 0, 0, 0.4)' },
+    access: { background: '#fff', color: '#000', leftItem: light[400], activeLeftItem: light[500], rightItem: light[400], disabled: 'rgba(0, 0, 0, 0.4)' },
+    live: { background: '#fff', color: '#000', leftItem: light[400], activeLeftItem: light[500], rightItem: light[400], disabled: 'rgba(0, 0, 0, 0.4)' },
+    breadcrumbs: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)', },
+}
+
+export const dark_palette = {
+    primary: { main: "#0087dc", contrastText: '#fff' },
+    secondary: { main: '#E53B2F', contrastText: '#fff' },
+    warning: { main: '#FFD23F', contrastText: '#fff' },
+    appbar: { background: dark[900], color: '#fff', svg: '#fff' },
+    divider: dark[300],
+    boxShadow: ['0px 10px 15px -2px rgba(0, 18, 40, 1)', '0px 10px 15px -2px rgba(0, 18, 40, 1)'],
+    siderbar: { background: dark[900], color: '#fff', active: dark[800], hover: "rgba(0, 135, 220, .5)" },
+    paper: { background: dark[500], color: '#fff' },
+    dialog: { background: dark[500], color: '#fff' },
+    layout: { background: dark[700], color: "#fff" },
+    button: { background: dark[300], color: '#fff', hover: 'rgba(0, 0, 0, 0.2)' },
+    tab: { background: dark[300], color: '#fff' },
+    table: { background: dark[300], color: '#fff', odd: dark[500], even: dark[400], border: 'unset', disabled: '#647386' },
+    action: { background: dark[300], color: '#fff' },
+    select: { background: dark[300], color: "#fff" },
+    pagination: { color: '#fff', disabled: '#647386' },
+    access: { background: dark[900], color: '#fff', leftItem: dark[300], activeLeftItem: '#2e5484', disabled: '#647386' },
+    live: { background: dark[900], color: '#fff', leftItem: dark[300], activeLeftItem: '#2e5484', disabled: '#647386' },
+    breadcrumbs: { background: '#fff', color: light[700], },
+}

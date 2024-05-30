@@ -14,7 +14,9 @@ import Paper from '@material-ui/core/Paper';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
-import { ReactComponent as Logo } from '../../images/delta.svg'
+import { ReactComponent as Logo } from '../../images/delta.svg';
+import { ReactComponent as DarkMode } from '../../images/dark_mode.svg';
+import { ReactComponent as LightMode } from '../../images/light_mode.svg';
 
 const drawerWidth = 240;
 
@@ -94,20 +96,10 @@ const useStyles = makeStyles((theme) => {
 }
 );
 
-const PathComponent = () => {
-  const location = useLocation();
-  const { t } = useContext(GlobalContext);
-  // console.log(location.pathname)
-  if (location.pathname === "/") return t("home")
-  if (location.pathname === "/user") return t("user")
-
-  return ""
-}
-
 const Appbar = ({ open }) => {
   const classes = useStyles();
   const { logout } = useContext(AuthContext);
-  const { locale, changeLocale, t } = useContext(GlobalContext);
+  const { locale, changeLocale, t, changeTheme, theme } = useContext(GlobalContext);
   const [anchor, setAnchor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -135,6 +127,17 @@ const Appbar = ({ open }) => {
         <div style={{ flex: 1 }} />
         <IconButton onClick={e => setAnchor(e.currentTarget)}>
           <LanguageSharpIcon />
+        </IconButton>
+
+        <IconButton onClick={() => changeTheme(theme === "dark" ? "light" : "dark")}>
+          {
+            theme === "dark"
+              ? <LightMode />
+              : <DarkMode />
+          }
+        </IconButton>
+        <IconButton onClick={logout}>
+          <ExitToAppIcon />
         </IconButton>
         <Menu
           anchorEl={anchorEl}

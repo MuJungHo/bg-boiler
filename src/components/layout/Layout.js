@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     paddingTop: 80,
-    backgroundColor: theme.grey.light,
+    color: theme.palette.layout.color,
+    backgroundColor: theme.palette.layout.background,
     height: '100vh'
   }
 }));
@@ -20,7 +21,7 @@ const Layout = ({ children }) => {
     <div className={classes.root}>
       <Appbar open={open} />
       <Siderbar open={open} setOpen={setOpen} />
-      <main style={{ width: "100%", padding: '0 24px', overflow: 'auto' }}>
+      <main style={{ width: "100%", padding: 24, overflow: 'auto' }}>
         {children}
       </main>
     </div>)
