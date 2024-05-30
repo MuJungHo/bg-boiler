@@ -15,9 +15,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
 import { ReactComponent as Logo } from '../../images/delta.svg';
-import { ReactComponent as DarkMode } from '../../images/dark_mode.svg';
-import { ReactComponent as LightMode } from '../../images/light_mode.svg';
 
+import { DarkMode, LightMode } from "../../images/icons";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => {
@@ -121,7 +120,8 @@ const Appbar = ({ open }) => {
       })}
     >
       <Toolbar style={{ display: 'flex' }}>
-        <Logo style={{ height: 32, width: 106, cursor: 'pointer' }} />
+        <Logo style={{ cursor: 'pointer', height: 32, width: 106 }} />
+
         <div style={{ backgroundColor: '#243F61', margin: '0 36px', width: 3, height: 32 }} ></div>
         <span style={{ color: '#0087DC', fontSize: 24 }}>Project Name</span>
         <div style={{ flex: 1 }} />
