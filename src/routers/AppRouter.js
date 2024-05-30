@@ -17,7 +17,7 @@ const AppRouter = () => {
           {
             routes.map(route =>
               <PrivateRoute key={route.path} path={route.path} exact={route.exact}>
-                <route.component />
+                {route.component && <route.component />}
               </PrivateRoute>)
           }
           {/* <Redirect to='/' /> */}

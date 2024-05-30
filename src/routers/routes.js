@@ -1,9 +1,8 @@
 import Home from '../Views/Home';
 import User from "../Views/User";
-import Component from "../Views/Component";
+import Input from "../Views/Input";
+import Typography from "../Views/Typography";
 
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import PersonIcon from '@material-ui/icons/Person';
 import {
   Component as ComponentIcon,
   Home as HomeIcon,
@@ -29,10 +28,30 @@ const routes = [
   {
     path: "/component",
     name: "component",
-    component: Component,
+    // component: Input,
     sider: true,
     icon: ComponentIcon,
+    children: [
+      {
+        path: "/typography",
+        name: "typography"
+      },
+      {
+        path: "/input",
+        name: "input"
+      }
+    ]
   },
+  {
+    path: "/typography",
+    name: "typography",
+    component: Typography
+  },
+  {
+    path: "/input",
+    name: "input",
+    component: Input
+  }
 ]
 
 export default routes

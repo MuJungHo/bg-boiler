@@ -149,16 +149,16 @@ const OpenMultiLevel = ({ route }) => {
     <React.Fragment>
       <ListItem className={classes.node} onClick={handleClick}>
         <route.icon />
-        <ListItemText primary={t(`sider${route.name}`)} />
+        <ListItemText primary={route.name} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {children.map((path, key) => (
-            <NavLink key={key} to={path}>
-              <MenuItem style={{ padding: '8px 16px 8px 48px' }} route={path} className={clsx(classes.node, {
-                [classes.nodeActive]: location.pathname === path,
-              })} ><FiberManualRecord style={{ width: 10, marginRight: 10 }} />{t(`sider${path}`)}</MenuItem></NavLink>
+          {children.map((child, key) => (
+            <NavLink key={key} to={child.path}>
+              <MenuItem style={{ padding: '8px 16px 8px 48px' }} route={child.path} className={clsx(classes.node, {
+                [classes.nodeActive]: location.pathname === child.path,
+              })} ><FiberManualRecord style={{ width: 10, marginRight: 10 }} />{child.name}</MenuItem></NavLink>
           ))}
         </List>
       </Collapse>
