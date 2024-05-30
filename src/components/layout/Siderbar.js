@@ -6,17 +6,28 @@ import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import Collapse from '@material-ui/core/Collapse';
+
+import {
+  ArrowBack,
+  ArrowForward,
+  ExpandLess,
+  ExpandMore,
+  FiberManualRecord
+} from '@material-ui/icons';
+
 import routes from '../../routers/routes';
+import { version } from "../../../package.json"
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
-    height: 80,
+    marginTop: 80,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -31,17 +42,19 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: 'nowrap',
+    whiteSpace: 'nowrap'
   },
   drawerOpen: {
+    paddingTop: 90,
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    backgroundColor: theme.blue.dark
+    backgroundColor: theme.palette.siderbar.background,
   },
   drawerClose: {
+    paddingTop: 90,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -51,33 +64,124 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9) + 1,
     },
-    backgroundColor: theme.blue.dark
+    backgroundColor: theme.palette.siderbar.background,
   },
   node: {
-    color: '#ffffff',
+    color: theme.palette.siderbar.color,
     // transition: 'background-color 0.2s ease',
     '&:hover': {
-      backgroundColor: 'rgba(82, 149, 255, 0.4)'
+      color: theme.palette.siderbar.color,
+      backgroundColor: theme.palette.siderbar.hover,
     },
     '& > div > span': {
       marginLeft: 10,
       fontSize: 16
     },
     '& > *:first-child': {
-      height: 32,
-      width: 32,
-      margin: 'auto'
+      // height: 32,
+      // width: 32,
+      // margin: 'auto'
     },
   },
   nodeActive: {
-    backgroundColor: theme.blue.delta
+    color: theme.palette.siderbar.color,
+    backgroundColor: theme.palette.siderbar.active
+  },
+  footer: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   }
 }));
 
-const Siderbar = ({ open, setOpen }) => {
+const CloseMutiLevel = ({ route }) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { children } = route;
+  const { t } = useContext(GlobalContext);
+  const location = useLocation();
+  const classes = useStyles();
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <div>
+      <ListItem className={clsx(classes.node, {
+        [classes.nodeActive]: location.pathname === route.path,
+      })} onClick={handleClick}>
+        <route.icon />
+      </ListItem>
+      <Menu
+        getContentAnchorEl={null}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        {children.map((path, key) => <NavLink key={key} to={path}>
+          <MenuItem onClick={handleClose}>{t(`sider${path}`)}</MenuItem>
+        </NavLink>)}
+      </Menu>
+    </div>
+  );
+
+}
+
+const OpenMultiLevel = ({ route }) => {
+  const location = useLocation();
+  const classes = useStyles();
+  const { children } = route;
+  const { t } = useContext(GlobalContext);
+  const [open, setOpen] = React.useState(route.children.includes(location.pathname));
+
+  const handleClick = () => {
+    setOpen((prev) => !prev);
+  };
+
+  return (
+    <React.Fragment>
+      <ListItem className={classes.node} onClick={handleClick}>
+        <route.icon />
+        <ListItemText primary={t(`sider${route.name}`)} />
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          {children.map((path, key) => (
+            <NavLink key={key} to={path}>
+              <MenuItem style={{ padding: '8px 16px 8px 48px' }} route={path} className={clsx(classes.node, {
+                [classes.nodeActive]: location.pathname === path,
+              })} ><FiberManualRecord style={{ width: 10, marginRight: 10 }} />{t(`sider${path}`)}</MenuItem></NavLink>
+          ))}
+        </List>
+      </Collapse>
+    </React.Fragment >
+  );
+};
+const SingleLevel = ({ route, open }) => {
   const classes = useStyles();
   const location = useLocation();
   const { t } = useContext(GlobalContext);
+  return (
+    <NavLink to={route.path}>
+      <ListItem className={clsx(classes.node, {
+        [classes.nodeActive]: location.pathname === route.path,
+      })}>
+        <route.icon />
+        {open && <ListItemText primary={route.name} />}
+      </ListItem>
+    </NavLink>
+  );
+};
+const Siderbar = ({ open, setOpen }) => {
+  const classes = useStyles();
 
   return (
     <Drawer
@@ -93,26 +197,36 @@ const Siderbar = ({ open, setOpen }) => {
         }),
       }}
     >
-      <div className={classes.toolbar}>
-        {open && <img style={{ width: 150, margin: 'auto' }} src={process.env.PUBLIC_URL + '/delta-logo.png'} alt="logo" />
-        }
-        <IconButton edge="end" onClick={() => setOpen(!open)}>
-          {open ? <ArrowBackIosIcon color="primary" /> : <ArrowForwardIosIcon color="primary" />}
-        </IconButton>
-      </div>
-      <List>
+      <List style={{ height: 'calc(100vh - 175px)', overflow: 'auto' }}>
         {
-          routes.map(route =>
-            <NavLink key={route.path} to={route.path}>
-              <ListItem className={clsx(classes.node, {
-                [classes.nodeActive]: location.pathname === route.path,
-              })}>
-                <route.icon />
-                {open && <ListItemText primary={t(`${route.name}`)} />}
-              </ListItem>
-            </NavLink>)
+          routes.map(route => Array.isArray(route.children)
+            ?
+            open
+              ? <OpenMultiLevel key={route.path} route={route} />
+              : <CloseMutiLevel key={route.path} route={route} />
+            : route.sider && <SingleLevel key={route.path} route={route} open={open} />)
         }
       </List>
+      {/* <div style={{ flex: 1 }}></div> */}
+      <div
+        className={classes.footer}
+        style={{
+          position: 'fixed',
+          width: open ? drawerWidth : 72,
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: open ? '0 20px' : '',
+          alignItems: 'center',
+          bottom: 20,
+        }}>
+        {open && <span style={{ color: "#fff" }}>v{version}</span>}
+        <IconButton
+          variant="outlined"
+          onClick={() => setOpen(!open)}
+          style={{ margin: open ? '' : 'auto' }}>
+          {open ? <ArrowBack /> : <ArrowForward />}
+        </IconButton>
+      </div>
     </Drawer>)
 }
 

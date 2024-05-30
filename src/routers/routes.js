@@ -10,12 +10,14 @@ const routes = [
     name: "home",
     component: Home,
     icon: DashboardIcon,
+    sider: true,
     exact: true
   },
   {
     path: "/user",
     name: "user",
     component: User,
+    sider: true,
     icon: PersonIcon,
   },
 ]

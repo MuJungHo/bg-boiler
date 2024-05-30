@@ -9,52 +9,90 @@ import LanguageSharpIcon from '@material-ui/icons/LanguageSharp';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
 import Paper from '@material-ui/core/Paper';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import WbSunnyIcon from '@material-ui/icons/WbSunny';
+import { ReactComponent as Logo } from '../../images/delta.svg'
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    boxShadow: 'unset',
-    backgroundColor: '#f4f6f8',
-    // boxShadow: theme.shadows[0],
-    zIndex: theme.zIndex.drawer + 1,
-    width: `calc(100% - ${73}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    '& .MuiToolbar-root': {
-      height: 80
+const useStyles = makeStyles((theme) => {
+  // console.log(theme)
+  return ({
+    appBar: {
+      boxShadow: 'unset',
+      zIndex: theme.zIndex.drawer + 1,
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      color: theme.palette.appbar.color,
+      backgroundColor: theme.palette.appbar.background,
+      '& .MuiToolbar-root': {
+        height: 80
+      },
+      '& svg': {
+        color: theme.palette.appbar.svg,
+      },
+      borderBottom: '6px solid rgb(100, 215, 215)',
+      '&::before': {
+        content: '""',
+        display: 'block',
+        position: 'absolute',
+        height: 6,
+        width: '60%',
+        left: 0,
+        top: 80,
+        backgroundColor: 'rgb(0, 135, 220)'
+      },
+      '&::after': {
+        content: '""',
+        display: 'block',
+        position: 'absolute',
+        height: 6,
+        right: 0,
+        top: 80,
+        width: '20%',
+        backgroundColor: 'rgb(185, 235, 95)'
+      },
+
+    },
+    appBarShift: {
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+    paper: {
+      padding: 20,
+      paddingRight: 0,
+      flexGrow: 1,
+      backgroundColor: '#fff',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      height: 48,
+      fontSize: 14,
+    },
+    menuButton: {
+      marginRight: 36,
+    },
+    hide: {
+      display: 'none',
+    },
+    copyright: {
+      color: theme.palette.dialog.color,
+      backgroundColor: theme.palette.dialog.background,
+      width: 500,
+      height: 120,
+      textAlign: 'center',
+      paddingTop: 20
     }
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  paper: {
-    padding: 20,
-    flexGrow: 1,
-    backgroundColor: '#fff',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 48,
-    fontSize: 14,
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  hide: {
-    display: 'none',
-  }
-}));
+  })
+}
+);
 
 const PathComponent = () => {
   const location = useLocation();
@@ -62,15 +100,16 @@ const PathComponent = () => {
   // console.log(location.pathname)
   if (location.pathname === "/") return t("home")
   if (location.pathname === "/user") return t("user")
-  
+
   return ""
 }
 
 const Appbar = ({ open }) => {
   const classes = useStyles();
   const { logout } = useContext(AuthContext);
-  const { locale, changeLocale, } = useContext(GlobalContext);
+  const { locale, changeLocale, t } = useContext(GlobalContext);
   const [anchor, setAnchor] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const languageMenuOpen = !!anchor;
 
@@ -78,6 +117,9 @@ const Appbar = ({ open }) => {
     changeLocale(locale)
     setAnchor(null)
   }
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <AppBar
@@ -86,20 +128,25 @@ const Appbar = ({ open }) => {
         [classes.appBarShift]: open,
       })}
     >
-      <Toolbar>
-        <Paper className={classes.paper}>
-          <PathComponent />
-          <div>
-            <IconButton onClick={e => setAnchor(e.currentTarget)}>
-              <LanguageSharpIcon />
-            </IconButton>
-            <IconButton
-              onClick={logout}
-            >
-              <ExitToAppIcon />
-            </IconButton>
-          </div>
-        </Paper>
+      <Toolbar style={{ display: 'flex' }}>
+        <Logo style={{ height: 32, width: 106, cursor: 'pointer' }} />
+        <div style={{ backgroundColor: '#243F61', margin: '0 36px', width: 3, height: 32 }} ></div>
+        <span style={{ color: '#0087DC', fontSize: 24 }}>Project Name</span>
+        <div style={{ flex: 1 }} />
+        <IconButton onClick={e => setAnchor(e.currentTarget)}>
+          <LanguageSharpIcon />
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          getContentAnchorEl={null}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <MenuItem >{t("user-profile")}</MenuItem>
+          <MenuItem >{t('logout')}</MenuItem>
+        </Menu>
         <Menu
           open={languageMenuOpen}
           anchorEl={anchor}
