@@ -46,8 +46,6 @@ export const lighten_palette = {
     action: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)' },
     select: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)', },
     pagination: { color: 'rgba(0, 0, 0, 0.87)', disabled: 'rgba(0, 0, 0, 0.4)' },
-    access: { background: '#fff', color: '#000', leftItem: light[400], activeLeftItem: light[500], rightItem: light[400], disabled: 'rgba(0, 0, 0, 0.4)' },
-    live: { background: '#fff', color: '#000', leftItem: light[400], activeLeftItem: light[500], rightItem: light[400], disabled: 'rgba(0, 0, 0, 0.4)' },
     breadcrumbs: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)', },
 }
 
@@ -68,7 +66,5 @@ export const dark_palette = {
     action: { background: dark[300], color: '#fff' },
     select: { background: dark[300], color: "#fff" },
     pagination: { color: '#fff', disabled: '#647386' },
-    access: { background: dark[900], color: '#fff', leftItem: dark[300], activeLeftItem: '#2e5484', disabled: '#647386' },
-    live: { background: dark[900], color: '#fff', leftItem: dark[300], activeLeftItem: '#2e5484', disabled: '#647386' },
     breadcrumbs: { background: '#fff', color: light[700], },
 }

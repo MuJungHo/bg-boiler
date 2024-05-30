@@ -10,6 +10,7 @@ import { lighten_palette, dark_palette } from "../customTheme";
 
 import i18n from '../i18n'
 
+import "../style/normalize.css";
 
 const light = createTheme({
   dark: false,
@@ -25,7 +26,7 @@ const GlobalContext = createContext();
 
 function GlobalProvider({ children, ...rest }) {
   const [locale, setLocale] = useState(localStorage.getItem('locale') || 'zh-TW');
-  const [theme, setTheme] = useState(localStorage.getItem("theme") === 'dark');
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const [snackBar, setSnackBar] = useState({
     isOpen: false,
     severity: 'info',
@@ -34,7 +35,7 @@ function GlobalProvider({ children, ...rest }) {
 
   const changeTheme = (theme) => {
     setTheme(theme);
-    localStorage.setItem('theme', theme ? "dark" : "light")
+    localStorage.setItem('theme', theme)
   };
 
   const changeLocale = (locale) => {
