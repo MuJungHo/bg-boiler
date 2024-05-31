@@ -4,6 +4,7 @@ import Input from "../Views/Input";
 import Display from "../Views/Display";
 import Layout from "../Views/Layout";
 import Feedback from "../Views/Feedback";
+import Navigation from "../Views/Navigation";
 
 import {
   Component as ComponentIcon,
@@ -49,6 +50,10 @@ const routes = [
       {
         path: "/feedback",
         name: "feedback"
+      },
+      {
+        path: "/navigation",
+        name: "navigation"
       }
     ]
   },
@@ -71,6 +76,11 @@ const routes = [
     path: "/feedback",
     name: "feedback",
     component: Feedback
+  },
+  {
+    path: "/navigation",
+    name: "navigation",
+    component: Navigation
   }
 ]
 

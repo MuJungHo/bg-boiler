@@ -1,12 +1,18 @@
 {
     "account": "Account",
     "close": "Close",
+    "component": "Component",
     "confirm": "Confirm",
     "current-location": "The current location is {{page}}.",
+    "display": "Display",
+    "feedback": "Feedback",
     "home": "Home",
-    "password": "Password",
-    "login": "Login",
+    "input": "Input",
     "keep-me": "Keep Me",
+    "layout": "Layout",
+    "login": "Login",
+    "navigation": "Navigation",
+    "password": "Password",
     "user": "User",
     "welcome": "Welcome"
 }

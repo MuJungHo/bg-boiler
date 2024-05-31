@@ -1,12 +1,18 @@
 {
     "account": "帳號",
     "close": "關閉",
+    "component": "組件",
     "confirm": "確認",
     "current-location": "目前在 {{page}}",
+    "display": "顯示",
+    "feedback": "回饋",
     "home": "首頁",
-    "password": "密碼",
-    "login": "登入",
+    "input": "輸入",
     "keep-me": "記住我",
+    "layout": "佈局",
+    "login": "登入",
+    "navigation": "導航",
+    "password": "密碼",
     "user": "使用者",
     "welcome": "歡迎"
 }

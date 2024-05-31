@@ -21,23 +21,10 @@ import { DateRangePicker, DatePicker } from 'rsuite';
 import SearchIcon from "@material-ui/icons/Search"
 
 
-const Component = () => {
+const Input = () => {
   // const { t } = useContext(GlobalContext);
   return (
     <>
-      <Paper style={{ width: '100%', padding: 16, marginBottom: 20 }}>
-        <Text variant="h5">Breadcrumbs</Text>
-        <Divider style={{ margin: '16px 0' }} />
-        <Breadcrumbs>
-          <Link component="button">
-            Material-UI
-          </Link>
-          <Link component="button">
-            Core
-          </Link>
-          <Typography>Breadcrumb</Typography>
-        </Breadcrumbs>
-      </Paper>
       <Paper style={{ width: '100%', padding: 16, marginBottom: 20 }}>
         <Text variant="h5">Radio</Text>
         <Divider style={{ margin: '16px 0' }} />
@@ -90,4 +77,4 @@ const Component = () => {
 }
 
 
-export default Component;
+export default Input;
