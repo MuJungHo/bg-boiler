@@ -6,3 +6,4 @@ export { default as Paper } from './Paper';
 export { default as Button } from './Button';
 export { default as Switch } from './Switch';
 export { default as TextField } from './TextField';
+export { default as Table } from './Table';
