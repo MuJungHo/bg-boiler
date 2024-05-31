@@ -40,13 +40,14 @@ export const lighten_palette = {
     paper: { background: '#fff', color: '#000' },
     dialog: { background: '#fff', color: '#000' },
     layout: { background: '#eee', color: "#000" },
-    button: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)', hover: 'rgba(0, 0, 0, 0.2)' },
+    button: { background: '#fff', color: '#53bdff', hover: 'rgba(0, 0, 0, 0.2)' },
     tab: { background: '#fff', color: '#53bdff' },
     table: { background: '#fafafa', color: 'rgba(0, 0, 0, 0.87)', odd: "", even: "", border: '', disabled: 'rgba(0, 0, 0, 0.4)' },
     action: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)' },
     select: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)', },
     pagination: { color: 'rgba(0, 0, 0, 0.87)', disabled: 'rgba(0, 0, 0, 0.4)' },
-    breadcrumbs: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)', },
+    breadcrumbs: { background: '#fff', color: 'rgba(0, 0, 0, 0.54)', },
+    input: { color: 'rgba(0, 0, 0, 0.54)' }
 }
 
 export const dark_palette = {
@@ -60,11 +61,12 @@ export const dark_palette = {
     paper: { background: dark[500], color: '#fff' },
     dialog: { background: dark[500], color: '#fff' },
     layout: { background: dark[700], color: "#fff" },
-    button: { background: dark[300], color: '#fff', hover: 'rgba(0, 0, 0, 0.2)' },
+    button: { background: dark[300], color: '#53bdff', hover: 'rgba(0, 0, 0, 0.2)' },
     tab: { background: dark[300], color: '#fff' },
     table: { background: dark[300], color: '#fff', odd: dark[500], even: dark[400], border: 'unset', disabled: '#647386' },
     action: { background: dark[300], color: '#fff' },
     select: { background: dark[300], color: "#fff" },
     pagination: { color: '#fff', disabled: '#647386' },
-    breadcrumbs: { background: '#fff', color: light[700], },
+    breadcrumbs: { background: '#fff', color: 'rgba(255, 255, 255, 0.54)', },
+    input: { color: 'rgba(255, 255, 255, 0.54)' }
 }

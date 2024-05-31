@@ -4,7 +4,17 @@ import { createTheme } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import {
   Snackbar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
+  Typography,
+  Divider
+  // DialogContentText
 } from '@material-ui/core'
+
+import Close from '@material-ui/icons/Close';
 
 import { lighten_palette, dark_palette } from "../customTheme";
 
@@ -28,10 +38,19 @@ function GlobalProvider({ children, ...rest }) {
   const [locale, setLocale] = useState(localStorage.getItem('locale') || 'zh-TW');
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const [snackBar, setSnackBar] = useState({
-    isOpen: false,
+    open: false,
     severity: 'info',
     message: ''
   })
+
+  const [dialog, setDialog] = useState({
+    title: "",
+    open: false,
+    content: <></>,
+    actions: <></>
+  })
+
+  const dialogStyle = theme === "dark" ? dark_palette.layout : lighten_palette.layout
 
   const changeTheme = (theme) => {
     setTheme(theme);
@@ -43,20 +62,13 @@ function GlobalProvider({ children, ...rest }) {
     localStorage.setItem('locale', locale)
   };
 
-  const showSnackbar = ({ severity = "info", message = "" }) => {
-    setSnackBar({
-      isOpen: true,
-      severity,
-      message
-    })
-  }
-
   const value = {
-    showSnackbar,
     locale,
     t: i18n(locale),
     changeLocale,
     changeTheme,
+    setDialog,
+    setSnackBar,
     theme
   };
 
@@ -67,22 +79,51 @@ function GlobalProvider({ children, ...rest }) {
     <ThemeProvider theme={theme === "dark" ? dark : light}>
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        open={snackBar.isOpen}
+        open={snackBar.open}
         autoHideDuration={3000}
         onClose={() => setSnackBar({
           ...snackBar,
-          isOpen: false,
+          open: false,
         })}>
         <Alert
           elevation={6}
           variant="filled"
           onClose={() => setSnackBar({
             ...snackBar,
-            isOpen: false,
+            open: false,
           })} severity={snackBar.severity}>
           {snackBar.message}
         </Alert>
       </Snackbar>
+      <Dialog
+        onClose={() => setDialog({ ...dialog, open: false })}
+        open={dialog.open}
+      >
+        {dialog.title && <DialogTitle
+          disableTypography
+          style={{
+            backgroundColor: dialogStyle.background,
+            color: dialogStyle.color
+          }}
+        ><Typography variant="h6">{dialog.title}</Typography>
+          <IconButton style={{
+            color: dialogStyle.color,
+            position: 'absolute',
+            right: 8,
+            top: 8,
+          }} onClick={() => setDialog({ ...dialog, open: false })}>
+            <Close />
+          </IconButton>
+        </DialogTitle>}
+        <Divider />
+        {dialog.content && <DialogContent style={{
+          width: 500,
+          backgroundColor: dialogStyle.background,
+        }}>{dialog.content}</DialogContent>}
+        {dialog.actions && <DialogActions style={{
+          backgroundColor: dialogStyle.background,
+        }}>{dialog.actions}</DialogActions>}
+      </Dialog>
       {children}
     </ThemeProvider>
   </GlobalContext.Provider>;

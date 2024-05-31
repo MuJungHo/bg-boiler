@@ -4,7 +4,8 @@ import {
   Radio,
   Checkbox,
   Text,
-  Paper
+  Paper,
+  Button
 } from "../components/common";
 
 import {
@@ -35,12 +36,22 @@ const Component = () => {
         <Divider style={{ margin: '16px 0' }} />
         <Radio checked={false} />
         <Radio checked={true} />
+        <Radio checked={false} color="secondary" />
+        <Radio checked={true} color="secondary" />
       </Paper>
       <Paper style={{ width: '100%', padding: 16, marginBottom: 20 }}>
         <Text variant="h5">Checkbox</Text>
         <Divider style={{ margin: '16px 0' }} />
         <Checkbox checked={false} />
         <Checkbox checked={true} />
+        <Checkbox checked={false} color="secondary" />
+        <Checkbox checked={true} color="secondary" />
+      </Paper>
+      <Paper style={{ width: '100%', padding: 16, marginBottom: 20 }}>
+        <Text variant="h5">Button</Text>
+        <Divider style={{ margin: '16px 0' }} />
+        <Button style={{ marginRight: 16 }}>Button</Button>
+        <Button color="secondary">Button</Button>
       </Paper>
     </>
   );

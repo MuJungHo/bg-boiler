@@ -68,12 +68,13 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const { login, token, setKeep, keep } = useContext(AuthContext);
-  const { t, changeLocale, locale, showSnackbar } = useContext(GlobalContext);
+  const { t, changeLocale, locale, setSnackBar } = useContext(GlobalContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const token = await getToken({ account, password }).catch((message) => showSnackbar({
+    const token = await getToken({ account, password }).catch((message) => setSnackBar({
+      open: true,
       message,
       severity: "error"
     }))

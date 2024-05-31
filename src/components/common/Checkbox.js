@@ -5,6 +5,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 export default withStyles(theme => ({
   root: {
-    color: theme.palette.button.color
+    color: theme.palette.input.color
   }
-}))((props) => <Checkbox color="primary"  {...props} />)
+}))((props) => <Checkbox color={props.color || "primary"}  {...props} />)

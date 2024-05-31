@@ -5,6 +5,6 @@ import Radio from '@material-ui/core/Radio';
 
 export default withStyles(theme => ({
   root: {
-    color: theme.palette.button.color
+      color: theme.palette.input.color
   }
-}))((props) => <Radio color="primary" {...props} />)
+}))((props) => <Radio color={props.color || "primary"} {...props} />)

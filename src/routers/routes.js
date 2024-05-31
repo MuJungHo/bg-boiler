@@ -3,6 +3,7 @@ import User from "../Views/User";
 import Input from "../Views/Input";
 import Display from "../Views/Display";
 import Layout from "../Views/Layout";
+import Feedback from "../Views/Feedback";
 
 import {
   Component as ComponentIcon,
@@ -44,6 +45,10 @@ const routes = [
       {
         path: "/layout",
         name: "layout"
+      },
+      {
+        path: "/feedback",
+        name: "feedback"
       }
     ]
   },
@@ -61,6 +66,11 @@ const routes = [
     path: "/layout",
     name: "layout",
     component: Layout
+  },
+  {
+    path: "/feedback",
+    name: "feedback",
+    component: Feedback
   }
 ]
 
