@@ -143,7 +143,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 750,
     '& .MuiTableCell-root': {
       color: theme.palette.table.color
-    },
+    }
   },
   visuallyHidden: {
     border: 0,
