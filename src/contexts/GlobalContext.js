@@ -1,6 +1,7 @@
 import React, { useState, createContext } from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import { createTheme } from '@material-ui/core/styles';
+import { CustomProvider } from 'rsuite';
 import Alert from '@material-ui/lab/Alert';
 import {
   Snackbar,
@@ -21,6 +22,7 @@ import { lighten_palette, dark_palette } from "../customTheme";
 import i18n from '../i18n'
 
 import "../style/normalize.css";
+import 'rsuite/dist/rsuite.min.css';
 
 const light = createTheme({
   dark: false,
@@ -76,56 +78,58 @@ function GlobalProvider({ children, ...rest }) {
     value={value}
     {...rest}
   >
-    <ThemeProvider theme={theme === "dark" ? dark : light}>
-      <Snackbar
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        open={snackBar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackBar({
-          ...snackBar,
-          open: false,
-        })}>
-        <Alert
-          elevation={6}
-          variant="filled"
+    <CustomProvider theme={theme}>
+      <ThemeProvider theme={theme === "dark" ? dark : light}>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          open={snackBar.open}
+          autoHideDuration={3000}
           onClose={() => setSnackBar({
             ...snackBar,
             open: false,
-          })} severity={snackBar.severity}>
-          {snackBar.message}
-        </Alert>
-      </Snackbar>
-      <Dialog
-        onClose={() => setDialog({ ...dialog, open: false })}
-        open={dialog.open}
-      >
-        {dialog.title && <DialogTitle
-          disableTypography
-          style={{
+          })}>
+          <Alert
+            elevation={6}
+            variant="filled"
+            onClose={() => setSnackBar({
+              ...snackBar,
+              open: false,
+            })} severity={snackBar.severity}>
+            {snackBar.message}
+          </Alert>
+        </Snackbar>
+        <Dialog
+          onClose={() => setDialog({ ...dialog, open: false })}
+          open={dialog.open}
+        >
+          {dialog.title && <DialogTitle
+            disableTypography
+            style={{
+              backgroundColor: dialogStyle.background,
+              color: dialogStyle.color
+            }}
+          ><Typography variant="h6">{dialog.title}</Typography>
+            <IconButton style={{
+              color: dialogStyle.color,
+              position: 'absolute',
+              right: 8,
+              top: 8,
+            }} onClick={() => setDialog({ ...dialog, open: false })}>
+              <Close />
+            </IconButton>
+          </DialogTitle>}
+          <Divider />
+          {dialog.content && <DialogContent style={{
+            width: 500,
             backgroundColor: dialogStyle.background,
-            color: dialogStyle.color
-          }}
-        ><Typography variant="h6">{dialog.title}</Typography>
-          <IconButton style={{
-            color: dialogStyle.color,
-            position: 'absolute',
-            right: 8,
-            top: 8,
-          }} onClick={() => setDialog({ ...dialog, open: false })}>
-            <Close />
-          </IconButton>
-        </DialogTitle>}
-        <Divider />
-        {dialog.content && <DialogContent style={{
-          width: 500,
-          backgroundColor: dialogStyle.background,
-        }}>{dialog.content}</DialogContent>}
-        {dialog.actions && <DialogActions style={{
-          backgroundColor: dialogStyle.background,
-        }}>{dialog.actions}</DialogActions>}
-      </Dialog>
-      {children}
-    </ThemeProvider>
+          }}>{dialog.content}</DialogContent>}
+          {dialog.actions && <DialogActions style={{
+            backgroundColor: dialogStyle.background,
+          }}>{dialog.actions}</DialogActions>}
+        </Dialog>
+        {children}
+      </ThemeProvider>
+    </CustomProvider>
   </GlobalContext.Provider>;
 }
 

@@ -47,7 +47,7 @@ export const lighten_palette = {
     select: { background: '#fff', color: 'rgba(0, 0, 0, 0.87)', },
     pagination: { color: 'rgba(0, 0, 0, 0.87)', disabled: 'rgba(0, 0, 0, 0.4)' },
     breadcrumbs: { background: '#fff', color: 'rgba(0, 0, 0, 0.54)', },
-    input: { color: 'rgba(0, 0, 0, 0.54)' }
+    input: { background: '#000', color: 'rgba(0, 0, 0, 0.54)' }
 }
 
 export const dark_palette = {
@@ -68,5 +68,5 @@ export const dark_palette = {
     select: { background: dark[300], color: "#fff" },
     pagination: { color: '#fff', disabled: '#647386' },
     breadcrumbs: { background: '#fff', color: 'rgba(255, 255, 255, 0.54)', },
-    input: { color: 'rgba(255, 255, 255, 0.54)' }
+    input: { background: 'rgba(255, 255, 255, 0.54)', color: 'rgba(255, 255, 255, 0.54)' }
 }
