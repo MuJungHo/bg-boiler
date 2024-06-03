@@ -7,6 +7,6 @@ export default withStyles(theme => ({
   root: {
     '& .MuiSwitch-track': {
       background: theme.palette.input.background,
-    }
+    },
   }
-}))((props) => <Switch color={props.color || "primary"}  {...props} />)
+}))((props) => <Switch {...props} />)

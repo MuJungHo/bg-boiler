@@ -5,6 +5,10 @@ import Radio from '@material-ui/core/Radio';
 
 export default withStyles(theme => ({
   root: {
-      color: theme.palette.input.color
+      color: theme.palette.input.color,
+      "&.Mui-disabled": {
+        color: theme.palette.disabled.color,
+        borderColor: theme.palette.disabled.color
+      },
   }
-}))((props) => <Radio color={props.color || "primary"} {...props} />)
+}))((props) => <Radio {...props} />)

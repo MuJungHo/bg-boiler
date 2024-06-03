@@ -9,15 +9,12 @@ import LanguageSharpIcon from '@material-ui/icons/LanguageSharp';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import Paper from '@material-ui/core/Paper';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import WbSunnyIcon from '@material-ui/icons/WbSunny';
 import { ReactComponent as Logo } from '../../images/delta.svg';
+import { Button } from "../common";
 
 import { DarkMode, LightMode } from "../../images/icons";
-const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => {
   // console.log(theme)
@@ -83,13 +80,8 @@ const useStyles = makeStyles((theme) => {
     hide: {
       display: 'none',
     },
-    copyright: {
-      color: theme.palette.dialog.color,
-      backgroundColor: theme.palette.dialog.background,
-      width: 500,
-      height: 120,
-      textAlign: 'center',
-      paddingTop: 20
+    button: {
+      color: theme.palette.action.color,
     }
   })
 }
@@ -125,9 +117,10 @@ const Appbar = ({ open }) => {
         <div style={{ backgroundColor: '#243F61', margin: '0 36px', width: 3, height: 32 }} ></div>
         <span style={{ color: '#0087DC', fontSize: 24 }}>Project Name</span>
         <div style={{ flex: 1 }} />
-        <IconButton onClick={e => setAnchor(e.currentTarget)}>
-          <LanguageSharpIcon />
-        </IconButton>
+        <Button className={classes.button} size="small" onClick={e => setAnchor(e.currentTarget)}>
+          <LanguageSharpIcon style={{ marginRight: 10}}/>
+          {locale}
+        </Button>
 
         <IconButton onClick={() => changeTheme(theme === "dark" ? "light" : "dark")}>
           {

@@ -49,7 +49,7 @@ const Feedback = () => {
       <Paper style={{ width: '100%', padding: 16, marginBottom: 20 }}>
         <Text variant="h5">Snackbar</Text>
         <Divider style={{ margin: '16px 0' }} />
-        <Button style={{ marginRight: 16 }} onClick={() => handleSetSnackbar("success")}>Button</Button>
+        <Button color="primary" style={{ marginRight: 16 }} onClick={() => handleSetSnackbar("success")}>Button</Button>
         <Button color="secondary" onClick={() => handleSetSnackbar("error")}>Button</Button>
       </Paper>
     </>
