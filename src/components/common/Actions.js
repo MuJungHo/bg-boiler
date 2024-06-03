@@ -32,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
     '& svg': {
       // fill: theme.grey.medium
     }
+  },
+  button: {
+    background: theme.palette.action.background,
+    color: theme.palette.action.color,
+    boxShadow: theme.palette.boxShadow[0],
   }
 }));
 export default ({ actions = [], row = {} }) => {
@@ -62,7 +67,7 @@ export default ({ actions = [], row = {} }) => {
   }
   return (
     <div onClick={e => e.stopPropagation()}>
-      <Button size="small" color="default" onClick={handleActionClick} variant="outlined"><MoreHorizIcon /></Button>
+      <Button className={classes.button} size="small" color="default" onClick={handleActionClick} variant="outlined"><MoreHorizIcon /></Button>
       <Menu
         open={Boolean(anchorEl)}
         className={classes.menu}

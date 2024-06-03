@@ -14,11 +14,9 @@ import {
   Link,
   Typography,
   Divider,
-  InputAdornment
 } from '@material-ui/core'
 
 import { DateRangePicker, DatePicker } from 'rsuite';
-import SearchIcon from "@material-ui/icons/Search"
 
 
 const Input = () => {
@@ -57,13 +55,7 @@ const Input = () => {
         <Divider style={{ margin: '16px 0' }} />
         <TextField label="TextField" style={{ marginRight: 16 }} />
         <TextField label="TextField" style={{ marginRight: 16 }} value="TextField Text" />
-        <TextField type="search" style={{ marginRight: 16 }} label="Search TextField" value="Search Text" InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          )
-        }} />
+        <TextField type="search" style={{ marginRight: 16 }} label="Search TextField" value="Search Text" />
         <TextField type="number" label="TextField Number" value={1000} />
       </Paper>
       <Paper style={{ width: '100%', padding: 16, marginBottom: 20 }}>

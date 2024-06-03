@@ -20,7 +20,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import { Checkbox, Actions } from "../common";
+import { Checkbox, Actions, TextField } from "../common";
 
 function EnhancedTableHead(props) {
   const {
@@ -101,7 +101,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected, title, toolbarActions } = props;
+  const { numSelected, title, toolbarActions, onKeywordSearch } = props;
 
   return (
     <Toolbar
@@ -113,12 +113,16 @@ const EnhancedTableToolbar = (props) => {
         <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
           {numSelected} selected
         </Typography>
-      ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          {title}
-        </Typography>
-      )}
+      ) : (<Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+        {title}
+      </Typography>)}
 
+      {numSelected === 0 && <TextField
+        style={{ marginRight: 20 }}
+        type="search"
+        size="small"
+        value="keyword"
+        onChange={onKeywordSearch} />}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton aria-label="delete">
@@ -143,6 +147,9 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 750,
     '& .MuiTableCell-root': {
+      color: theme.palette.table.color
+    },
+    '& .MuiTableSortLabel-root:hover': {
       color: theme.palette.table.color
     }
   },
@@ -174,6 +181,7 @@ export default ({
   rowsPerPage = 5,
   onRowsPerPageChange = () => { },
   onPageChange = () => { },
+  onKeywordSearch = () => { },
   rows = [],
   columns = [],
   onSortChange = () => { },
@@ -230,6 +238,7 @@ export default ({
         title={title}
         numSelected={selected.length}
         toolbarActions={toolbarActions}
+        onKeywordSearch={onKeywordSearch}
       />
       <TableContainer>
         <Table
