@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 
 export default withStyles(theme => ({
   root: {
+    minWidth: 'unset'
     // color: theme.palette.button.color
   }
 }))((props) => <Button variant="outlined" color={props.color || "primary"}  {...props} />)

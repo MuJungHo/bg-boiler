@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from "react";
+import { GlobalContext } from "../../contexts/GlobalContext";
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -19,7 +20,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import { Checkbox } from "../common"
+import { Checkbox, Actions } from "../common";
 
 function EnhancedTableHead(props) {
   const {
@@ -29,9 +30,12 @@ function EnhancedTableHead(props) {
     orderBy,
     numSelected,
     rowCount,
+    rowActions,
     onRequestSort,
     columns
   } = props;
+
+  const { t } = useContext(GlobalContext);
 
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -69,6 +73,7 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
+        {rowActions.length > 0 && <TableCell align="center">{t('action')}</TableCell>}
       </TableRow>
     </TableHead>
   );
@@ -77,7 +82,7 @@ function EnhancedTableHead(props) {
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
+    paddingRight: theme.spacing(2),
   },
   highlight:
     theme.palette.type === 'light'
@@ -96,7 +101,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected, title } = props;
+  const { numSelected, title, toolbarActions } = props;
 
   return (
     <Toolbar
@@ -121,11 +126,7 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        toolbarActions.length > 0 && <Actions actions={toolbarActions} />
       )}
     </Toolbar>
   );
@@ -167,7 +168,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({
+export default ({
   dense = false,
   page = 0,
   rowsPerPage = 5,
@@ -176,10 +177,12 @@ export default function EnhancedTable({
   rows = [],
   columns = [],
   onSortChange = () => { },
+  rowActions = [],
+  toolbarActions = [],
   orderBy = "calories",
   order = "asc",
   title = ""
-}) {
+}) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState([]);
 
@@ -190,19 +193,19 @@ export default function EnhancedTable({
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = rows.map((n) => n._id);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, _id) => {
+    const selectedIndex = selected.indexOf(_id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, _id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -217,7 +220,7 @@ export default function EnhancedTable({
     setSelected(newSelected);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (_id) => selected.indexOf(_id) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -226,6 +229,7 @@ export default function EnhancedTable({
       <EnhancedTableToolbar
         title={title}
         numSelected={selected.length}
+        toolbarActions={toolbarActions}
       />
       <TableContainer>
         <Table
@@ -240,21 +244,22 @@ export default function EnhancedTable({
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
             rowCount={rows.length}
+            rowActions={rowActions}
             columns={columns}
           />
           <TableBody>
             {rows.map((row, index) => {
-              const isItemSelected = isSelected(row.name);
+              const isItemSelected = isSelected(row._id);
               const labelId = `enhanced-table-checkbox-${index}`;
 
               return (
                 <TableRow
                   hover
-                  onClick={(event) => handleClick(event, row.name)}
+                  onClick={(event) => handleClick(event, row._id)}
                   role="checkbox"
                   aria-checked={isItemSelected}
                   tabIndex={-1}
-                  key={row.name}
+                  key={row._id}
                   selected={isItemSelected}
                 >
                   <TableCell padding="checkbox">
@@ -272,6 +277,10 @@ export default function EnhancedTable({
                       {row[column.key] || "--"}
                     </TableCell>
                   ))}
+
+                  {rowActions.length > 0 && <TableCell align="center">
+                    <Actions actions={rowActions} row={row} />
+                  </TableCell>}
                 </TableRow>
               );
             })}

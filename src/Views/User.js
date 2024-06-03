@@ -2,6 +2,12 @@ import React, { useContext } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { Table, Paper } from "../components/common";
 
+import {
+  BorderColorSharp,
+  Delete,
+  AddBox,
+  CloudDownload
+} from '@material-ui/icons';
 const rows = [
   {
     _id: "ABC",
@@ -71,6 +77,14 @@ const User = () => {
         onPageChange={(event, page) => console.log(page)}
         onRowsPerPageChange={event => console.log(parseInt(event.target.value, 10))}
         onSortChange={(isAsc, property) => console.log(isAsc, property)}
+        toolbarActions={[
+          { name: t('add'), onClick: () => { }, icon: <AddBox /> },
+          { name: t('export'), onClick: () => { }, icon: <CloudDownload /> },
+        ]}
+        rowActions={[
+          { name: t('edit'), onClick: (e, row) => { }, icon: <BorderColorSharp /> },
+          { name: t('delete'), onClick: (e, row) => { }, icon: <Delete /> },]}
+
       />
     </Paper>
   );
