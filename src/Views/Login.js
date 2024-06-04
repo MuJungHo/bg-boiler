@@ -14,11 +14,12 @@ import {
   Button,
   Card
 } from '@material-ui/core';
+import { ReactComponent as Logo } from '../images/delta.svg';
 
 const useStyles = makeStyles(theme => ({
   container: {
     height: '100vh',
-    // backgroundImage: `radial-gradient(circle at 50% 50%, ${theme.blue.delta}, ${theme.blue.dark} 150%)`,
+    backgroundImage: 'radial-gradient(circle at 48% 33%, #0f72a4, #1d3654 96%)',
     opacity: 0.88,
     display: 'flex',
     alignItems: 'center',
@@ -78,7 +79,7 @@ const Login = () => {
       message,
       severity: "error"
     }))
-    
+
     if (token) login(token)
   };
 
@@ -95,6 +96,11 @@ const Login = () => {
       <Card className={classes.card}>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <h1 className={classes.title}>{t('welcome')}</h1>
+          <Logo style={{
+            height: 40,
+            margin: '0 auto 24px auto',
+          }} />
+
           <FormControl>
             <TextField
               className={classes.user}

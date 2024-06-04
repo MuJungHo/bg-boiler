@@ -31,7 +31,6 @@ export const lighten_palette = {
     primary: { main: '#53bdff', contrastText: '#fff', light: "#53bdff" },
     secondary: { main: '#E53B2F', contrastText: '#fff' },
     warning: { main: '#FFD23F', contrastText: '#fff' },
-    light: { main: '#fff' },
     appbar: { background: '#fff', color: '#000', svg: '#000' },
     divider: "rgba(0, 0, 0, 0.12)",
     boxShadow: ["unset", "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)"],
