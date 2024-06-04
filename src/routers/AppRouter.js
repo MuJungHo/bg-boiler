@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, BrowserRouter, Redirect } from 'react-router-dom'
+import { Switch, BrowserRouter } from 'react-router-dom'
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import routes from './routes'

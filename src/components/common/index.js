@@ -8,3 +8,5 @@ export { default as Switch } from './Switch';
 export { default as TextField } from './TextField';
 export { default as Table } from './Table';
 export { default as Actions } from './Actions';
+export { default as DialogContent } from './DialogContent';
+export { default as DialogActions } from './DialogActions';

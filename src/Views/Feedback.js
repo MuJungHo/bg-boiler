@@ -3,37 +3,62 @@ import { GlobalContext } from "../contexts/GlobalContext";
 import {
   Text,
   Paper,
-  Button
+  Button,
+  DialogContent,
+  DialogActions,
+  TextField
 } from "../components/common";
 
 import {
-  Divider,
-} from '@material-ui/core'
+  Divider
+} from '@material-ui/core';
+
+const DialogSection = ({
+  onConfirm = () => { }
+}) => {
+  const [state, setState] = React.useState("")
+  const { closeDialog } = useContext(GlobalContext);
+  return (
+    <>
+      <DialogContent
+        dividers
+        style={{
+          width: 500
+        }}>
+        <Text variant="h5">
+          Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
+          lacus vel augue laoreet rutrum faucibus dolor auctor.
+        </Text>
+        <TextField autoFocus
+          margin="dense"
+          label="Email Address"
+          type="email"
+          fullWidth
+          value={state} onChange={e => setState(e.target.value)} />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDialog}>
+          Cancel
+        </Button>
+        <Button onClick={() => onConfirm(state)}>
+          Confirm
+        </Button>
+      </DialogActions>
+    </>)
+}
 
 const Feedback = () => {
-  const { setDialog, setSnackBar } = useContext(GlobalContext);
+  const { openDialog, openSnackbar } = useContext(GlobalContext);
 
   const handleSetDialog = () => {
-    setDialog({
+    openDialog({
       title: "Dialog Title",
-      open: true,
-      content: <Text variant="h5">
-        Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-        lacus vel augue laoreet rutrum faucibus dolor auctor.</Text>,
-      actions: <>
-        <Button>
-          Disagree
-        </Button>
-        <Button autoFocus>
-          Agree
-        </Button>
-      </>
+      section: <DialogSection onConfirm={state => console.log(state)} />
     })
   }
 
   const handleSetSnackbar = (severity) => {
-    setSnackBar({
-      open: true,
+    openSnackbar({
       message: "Snackbar Message",
       severity
     })

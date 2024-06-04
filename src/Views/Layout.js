@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
-import { GlobalContext } from "../contexts/GlobalContext";
+import React, {
+  // useContext
+} from "react";
+// import { GlobalContext } from "../contexts/GlobalContext";
 import {
   Paper
 } from "../components/common";
 
 const Layout = () => {
-  const { t } = useContext(GlobalContext);
+  // const { t } = useContext(GlobalContext);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', width: '100%', height: "calc(33% - 12px)" }}>

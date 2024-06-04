@@ -7,11 +7,11 @@ import {
   Snackbar,
   Dialog,
   DialogTitle,
-  DialogContent,
-  DialogActions,
+  // DialogContent,
+  // DialogActions,
   IconButton,
   Typography,
-  Divider
+  // Button
   // DialogContentText
 } from '@material-ui/core'
 
@@ -19,7 +19,7 @@ import Close from '@material-ui/icons/Close';
 
 import { lighten_palette, dark_palette } from "../customTheme";
 
-import i18n from '../i18n'
+import i18n from '../i18n';
 
 import "../style/normalize.css";
 import 'rsuite/dist/rsuite.min.css';
@@ -48,11 +48,11 @@ function GlobalProvider({ children, ...rest }) {
   const [dialog, setDialog] = useState({
     title: "",
     open: false,
-    content: <></>,
-    actions: <></>
+    section: <></>
   })
+  // console.log(typeof dialog.onConfirm === "function")
 
-  const dialogStyle = theme === "dark" ? dark_palette.layout : lighten_palette.layout
+  const dialogStyle = theme === "dark" ? dark_palette.paper : lighten_palette.paper
 
   const changeTheme = (theme) => {
     setTheme(theme);
@@ -64,13 +64,35 @@ function GlobalProvider({ children, ...rest }) {
     localStorage.setItem('locale', locale)
   };
 
+  const openDialog = (_dialog) => {
+    setDialog({
+      open: true,
+      ..._dialog
+    })
+  }
+
+  const closeDialog = () => {
+    setDialog({
+      ...dialog,
+      open: false,
+    })
+  }
+
+  const openSnackbar = (_snackbar) => {
+    setSnackBar({
+      open: true,
+      ..._snackbar
+    })
+  }
+
   const value = {
     locale,
     t: i18n(locale),
     changeLocale,
     changeTheme,
-    setDialog,
-    setSnackBar,
+    openDialog,
+    closeDialog,
+    openSnackbar,
     theme
   };
 
@@ -102,7 +124,7 @@ function GlobalProvider({ children, ...rest }) {
           onClose={() => setDialog({ ...dialog, open: false })}
           open={dialog.open}
         >
-          {dialog.title && <DialogTitle
+          <DialogTitle
             disableTypography
             style={{
               backgroundColor: dialogStyle.background,
@@ -117,15 +139,8 @@ function GlobalProvider({ children, ...rest }) {
             }} onClick={() => setDialog({ ...dialog, open: false })}>
               <Close />
             </IconButton>
-          </DialogTitle>}
-          <Divider />
-          {dialog.content && <DialogContent style={{
-            width: 500,
-            backgroundColor: dialogStyle.background,
-          }}>{dialog.content}</DialogContent>}
-          {dialog.actions && <DialogActions style={{
-            backgroundColor: dialogStyle.background,
-          }}>{dialog.actions}</DialogActions>}
+          </DialogTitle>
+          {dialog.section}
         </Dialog>
         {children}
       </ThemeProvider>

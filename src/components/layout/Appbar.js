@@ -1,10 +1,9 @@
 import React, { useContext } from 'react'
 import clsx from 'clsx';
-import { useLocation } from "react-router-dom"
+// import { useLocation } from "react-router-dom"
 import { AuthContext } from "../../contexts/AuthContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { makeStyles } from '@material-ui/core/styles';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LanguageSharpIcon from '@material-ui/icons/LanguageSharp';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
