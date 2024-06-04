@@ -16,9 +16,11 @@
     "keep-me": "Keep Me",
     "layout": "Layout",
     "login": "Login",
+    "logout": "Logout",
     "name": "Name",
     "navigation": "Navigation",
     "password": "Password",
     "user": "User",
+    "user-profile": "User Profile",
     "welcome": "Welcome"
 }

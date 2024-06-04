@@ -11,6 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Avatar from '@material-ui/core/Avatar';
 import { ReactComponent as Logo } from '../../images/delta.svg';
 import { Button } from "../common";
 
@@ -115,10 +116,10 @@ const Appbar = ({ open }) => {
         <Logo style={{ cursor: 'pointer', height: 32, width: 106 }} />
 
         <div style={{ backgroundColor: '#243F61', margin: '0 36px', width: 3, height: 32 }} ></div>
-        <span style={{ color: '#0087DC', fontSize: 24 }}>Project Name</span>
+        <span style={{ color: '#0087DC', fontSize: 24 }}>ACM Boilerplate</span>
         <div style={{ flex: 1 }} />
         <Button className={classes.button} size="small" onClick={e => setAnchor(e.currentTarget)}>
-          <LanguageSharpIcon style={{ marginRight: 10}}/>
+          <LanguageSharpIcon style={{ marginRight: 10 }} />
           {locale}
         </Button>
 
@@ -129,8 +130,8 @@ const Appbar = ({ open }) => {
               : <DarkMode />
           }
         </IconButton>
-        <IconButton onClick={logout}>
-          <ExitToAppIcon />
+        <IconButton size="small" onClick={e => setAnchorEl(e.currentTarget)}>
+          <Avatar src="../avatar.png" />
         </IconButton>
         <Menu
           anchorEl={anchorEl}
@@ -141,7 +142,7 @@ const Appbar = ({ open }) => {
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
           <MenuItem >{t("user-profile")}</MenuItem>
-          <MenuItem >{t('logout')}</MenuItem>
+          <MenuItem onClick={logout}>{t('logout')}</MenuItem>
         </Menu>
         <Menu
           open={languageMenuOpen}

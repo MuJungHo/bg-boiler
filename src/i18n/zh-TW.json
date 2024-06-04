@@ -16,9 +16,11 @@
     "keep-me": "記住我",
     "layout": "佈局",
     "login": "登入",
+    "logout": "登出",
     "name": "名稱",
     "navigation": "導航",
     "password": "密碼",
     "user": "使用者",
+    "user-profile": "使用者資料",
     "welcome": "歡迎"
 }
