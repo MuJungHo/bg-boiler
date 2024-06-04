@@ -34,9 +34,9 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   button: {
-    background: theme.palette.action.background,
-    color: theme.palette.action.color,
-    boxShadow: theme.palette.boxShadow[0],
+    // background: theme.palette.action.background,
+    // color: theme.palette.action.color,
+    // boxShadow: theme.palette.boxShadow[0],
   }
 }));
 export default ({ actions = [], row = {} }) => {
