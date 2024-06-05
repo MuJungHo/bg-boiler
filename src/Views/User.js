@@ -73,18 +73,21 @@ const User = () => {
           { key: 'department', label: t('department') },
           { key: 'email', label: t('email') },
         ]}
-        orderBy="calories"
+        order="asc"
+        orderBy="name"
         onPageChange={(event, page) => console.log(page)}
-        onRowsPerPageChange={event => console.log(parseInt(event.target.value, 10))}
+        onRowsPerPageChange={(event) => console.log(parseInt(event.target.value, 10))}
         onSortChange={(isAsc, property) => console.log(isAsc, property)}
+        onKeywordSearch={(event) => console.log(event.target.value)}
         toolbarActions={[
           { name: t('add'), onClick: () => { }, icon: <AddBox /> },
           { name: t('export'), onClick: () => { }, icon: <CloudDownload /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => { }, icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => { }, icon: <Delete /> },]}
-
+          { name: t('edit'), onClick: (e, row) => console.log(row), icon: <BorderColorSharp /> },
+          { name: t('delete'), onClick: (e, row) => console.log(row), icon: <Delete /> }
+        ]}
+        dense
       />
     </Paper>
   );

@@ -187,7 +187,7 @@ export default ({
   onSortChange = () => { },
   rowActions = [],
   toolbarActions = [],
-  orderBy = "calories",
+  orderBy = "",
   order = "asc",
   title = ""
 }) => {

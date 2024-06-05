@@ -5,7 +5,6 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
-import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItem from '@material-ui/core/ListItem';
@@ -21,7 +20,8 @@ import {
 } from '@material-ui/icons';
 
 import routes from '../../routers/routes';
-import { version } from "../../../package.json"
+import { version } from "../../../package.json";
+import { IconButton } from "../common";
 
 const drawerWidth = 240;
 
@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
 const CloseMutiLevel = ({ route }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { children } = route;
-  const { t } = useContext(GlobalContext);
+  // const { t } = useContext(GlobalContext);
   const location = useLocation();
   const classes = useStyles();
 
@@ -115,7 +115,7 @@ const CloseMutiLevel = ({ route }) => {
       <ListItem className={clsx(classes.node, {
         [classes.nodeActive]: location.pathname === route.path,
       })} onClick={handleClick}>
-        <route.icon />
+        <route.icon style={{ margin: 'auto' }} />
       </ListItem>
       <Menu
         getContentAnchorEl={null}
@@ -125,8 +125,8 @@ const CloseMutiLevel = ({ route }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {children.map((path, key) => <NavLink key={key} to={path}>
-          <MenuItem onClick={handleClose}>{t(`sider${path}`)}</MenuItem>
+        {children.map((child, key) => <NavLink key={key} to={child.path}>
+          <MenuItem onClick={handleClose}>{child.name}</MenuItem>
         </NavLink>)}
       </Menu>
     </div>
@@ -148,7 +148,7 @@ const OpenMultiLevel = ({ route }) => {
   return (
     <React.Fragment>
       <ListItem className={classes.node} onClick={handleClick}>
-        <route.icon />
+        <route.icon style={{ margin: 'auto' }} />
         <ListItemText primary={t(route.name)} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
@@ -156,9 +156,11 @@ const OpenMultiLevel = ({ route }) => {
         <List component="div" disablePadding>
           {children.map((child, key) => (
             <NavLink key={key} to={child.path}>
-              <MenuItem style={{ padding: '8px 16px 8px 48px' }} route={child.path} className={clsx(classes.node, {
-                [classes.nodeActive]: location.pathname === child.path,
-              })} ><FiberManualRecord style={{ width: 10, marginRight: 10 }} />{t(child.name)}</MenuItem></NavLink>
+              <MenuItem style={{ padding: '8px 16px 8px 48px' }} route={child.path}
+                className={clsx(classes.node, {
+                  [classes.nodeActive]: location.pathname === child.path,
+                })} >
+                <FiberManualRecord style={{ width: 10, marginRight: 10 }} />{t(child.name)}</MenuItem></NavLink>
           ))}
         </List>
       </Collapse>
@@ -174,7 +176,7 @@ const SingleLevel = ({ route, open }) => {
       <ListItem className={clsx(classes.node, {
         [classes.nodeActive]: location.pathname === route.path,
       })}>
-        <route.icon />
+        <route.icon style={{ margin: 'auto' }} />
         {open && <ListItemText primary={t(route.name)} />}
       </ListItem>
     </NavLink>
@@ -221,7 +223,6 @@ const Siderbar = ({ open, setOpen }) => {
         }}>
         {open && <span style={{ color: "#fff" }}>v{version}</span>}
         <IconButton
-          variant="outlined"
           onClick={() => setOpen(!open)}
           style={{ margin: open ? '' : 'auto' }}>
           {open ? <ArrowBack /> : <ArrowForward />}
