@@ -12,7 +12,9 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 import { ReactComponent as Logo } from '../../images/delta.svg';
-import { Button } from "../common";
+import {
+  Button,
+} from "../common";
 
 import { DarkMode, LightMode } from "../../images/icons";
 
@@ -89,7 +91,7 @@ const useStyles = makeStyles((theme) => {
 
 const Appbar = ({ open }) => {
   const classes = useStyles();
-  const { logout } = useContext(AuthContext);
+  const { logout, account } = useContext(AuthContext);
   const { locale, changeLocale, t, changeTheme, theme } = useContext(GlobalContext);
   const [anchor, setAnchor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -104,6 +106,18 @@ const Appbar = ({ open }) => {
     setAnchorEl(null);
   };
 
+  // const handleSetDialog = () => {
+  //   handleClose()
+  //   openDialog({
+  //     title: t("user-profile"),
+  //     section: <Profile />
+  //   })
+  // }
+
+  const handleLogout = async () => {
+    logout()
+  }
+
   return (
     <AppBar
       position="fixed"
@@ -113,24 +127,21 @@ const Appbar = ({ open }) => {
     >
       <Toolbar style={{ display: 'flex' }}>
         <Logo style={{ cursor: 'pointer', height: 32, width: 106 }} />
-
-        <div style={{ backgroundColor: '#243F61', margin: '0 36px', width: 3, height: 32 }} ></div>
-        <span style={{ color: '#0087DC', fontSize: 24 }}>ACM Boilerplate</span>
         <div style={{ flex: 1 }} />
         <Button className={classes.button} size="small" onClick={e => setAnchor(e.currentTarget)}>
           <LanguageSharpIcon style={{ marginRight: 10 }} />
           {locale}
         </Button>
 
-        <IconButton onClick={() => changeTheme(theme === "dark" ? "light" : "dark")}>
+        <Button size="small" onClick={() => changeTheme(theme === "dark" ? "light" : "dark")}>
           {
             theme === "dark"
               ? <LightMode />
               : <DarkMode />
           }
-        </IconButton>
+        </Button>
         <IconButton size="small" onClick={e => setAnchorEl(e.currentTarget)}>
-          <Avatar src="../avatar.png" />
+          <Avatar>{account?.slice(0, 3)}</Avatar>
         </IconButton>
         <Menu
           anchorEl={anchorEl}
@@ -140,8 +151,8 @@ const Appbar = ({ open }) => {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
-          <MenuItem >{t("user-profile")}</MenuItem>
-          <MenuItem onClick={logout}>{t('logout')}</MenuItem>
+          {/* <MenuItem onClick={handleSetDialog}>{t("user-profile")}</MenuItem> */}
+          <MenuItem onClick={handleLogout}>{t('logout')}</MenuItem>
         </Menu>
         <Menu
           open={languageMenuOpen}

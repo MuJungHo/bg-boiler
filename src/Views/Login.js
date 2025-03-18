@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { Redirect } from "react-router-dom";
-import { getToken } from '../utils/apis';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   TextField,
@@ -16,7 +15,7 @@ import {
 } from '@material-ui/core';
 import { ReactComponent as Logo } from '../images/delta.svg';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   container: {
     height: '100vh',
     backgroundImage: 'radial-gradient(circle at 48% 33%, #0f72a4, #1d3654 96%)',
@@ -68,20 +67,8 @@ const Login = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login, token, setKeep, keep } = useContext(AuthContext);
-  const { t, changeLocale, locale, setSnackBar } = useContext(GlobalContext);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const token = await getToken({ account, password }).catch((message) => setSnackBar({
-      open: true,
-      message,
-      severity: "error"
-    }))
-
-    if (token) login(token)
-  };
+  const { login, token, setKeep, keep, } = useContext(AuthContext);
+  const { t, changeLocale, locale, authedApi } = useContext(GlobalContext);
 
   if (token) {
     return <Redirect to="/" />
@@ -91,10 +78,18 @@ const Login = () => {
     changeLocale(e.target.value)
   }
 
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    const { token } = await authedApi.postAuthLogin({ data: { account, password } });
+
+    login(token);
+  }
+
   return (
     <div className={classes.container}>
       <Card className={classes.card}>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
+        <form className={classes.form} noValidate onSubmit={handleLogin}>
           <h1 className={classes.title}>{t('welcome')}</h1>
           <Logo style={{
             height: 40,
@@ -119,6 +114,7 @@ const Login = () => {
               variant="outlined"
               required
               fullWidth
+              value={password}
               onChange={e => setPassword(e.target.value)}
               name="password"
               label={t("password")}

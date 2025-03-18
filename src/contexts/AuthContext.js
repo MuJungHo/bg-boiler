@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-
+import { instance } from "../utils/apis";
 const AuthContext = createContext();
 
 function AuthProvider(props) {
@@ -7,16 +7,24 @@ function AuthProvider(props) {
   const [keep, setKeep] = useState(localStorage.getItem('keep') === "1");
 
   const login = async (jwtToken) => {
+
+    instance.defaults.headers.common['Authorization'] = jwtToken;
+
     setToken(jwtToken);
-    localStorage.setItem('keep', keep ? 1 : 0)
+
+    localStorage.setItem('keep', keep ? 1 : 0);
 
     if (keep) {
-      localStorage.setItem('token', jwtToken)
+      localStorage.setItem('token', jwtToken);
     }
   };
 
   const logout = () => {
+
+    delete instance.defaults.headers.common["Authorization"];
+
     setToken(null);
+
     localStorage.clear()
   };
 
@@ -24,7 +32,7 @@ function AuthProvider(props) {
     token,
     login,
     logout,
-    setKeep,
+    setKeep
   };
 
   return <AuthContext.Provider value={value} {...props} />;

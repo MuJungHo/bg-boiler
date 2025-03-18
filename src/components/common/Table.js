@@ -13,26 +13,27 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-// import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import { Checkbox, Actions, TextField } from "../common";
+import { Checkbox, Actions, TextField, Button } from "../common";
+import { Search, SearchOff } from "../../images/icons";
 
 function EnhancedTableHead(props) {
   const {
     classes,
     onSelectAllClick,
     order,
-    orderBy,
+    sort,
     numSelected,
     rowCount,
     rowActions,
     onRequestSort,
-    columns
+    columns,
+    checkable,
+    filterable,
   } = props;
 
   const { t } = useContext(GlobalContext);
@@ -44,28 +45,29 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {checkable && <TableCell padding="checkbox">
           <Checkbox
             color="secondary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
           />
-        </TableCell>
+        </TableCell>}
         {columns.map((column) => (
           <TableCell
             key={column.key}
             align="left"
             padding="normal"
-            sortDirection={orderBy === column.key ? order : false}
+            sortDirection={sort === column.key ? order : false}
           >
             <TableSortLabel
-              active={orderBy === column.key}
-              direction={orderBy === column.key ? order : 'asc'}
+              disabled={!filterable}
+              active={sort === column.key}
+              direction={sort === column.key ? order : 'asc'}
               onClick={createSortHandler(column.key)}
             >
               {column.label}
-              {orderBy === column.key ? (
+              {sort === column.key ? (
                 <span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </span>
@@ -73,7 +75,9 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
-        {rowActions.length > 0 && <TableCell align="center">{t('action')}</TableCell>}
+        {rowActions.length > 0 && <TableCell align="center">
+          {t('action')}
+        </TableCell>}
       </TableRow>
     </TableHead>
   );
@@ -96,42 +100,69 @@ const useToolbarStyles = makeStyles((theme) => ({
       },
   title: {
     flex: '1 1 100%',
+    display: 'flex',
+    alignItems: 'center'
   },
 }));
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected, title, toolbarActions, onKeywordSearch } = props;
+  const {
+    toolbarFilters,
+    numSelected,
+    title, toolbarActions, onKeywordSearch, filterable,
+    onSearchClick, onClearClick
 
+  } = props;
+  const [keyword, setKeyword] = React.useState("")
+  const onKeywordChange = (e) => {
+    setKeyword(e.target.value)
+    onKeywordSearch(e.target.value)
+  }
   return (
     <Toolbar
       className={clsx(classes.root, {
         [classes.highlight]: numSelected > 0,
       })}
     >
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
-        </Typography>
-      ) : (<Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-        {title}
-      </Typography>)}
-
-      {numSelected === 0 && <TextField
-        style={{ marginRight: 20 }}
-        type="search"
-        size="small"
-        value="keyword"
-        onChange={onKeywordSearch} />}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        toolbarActions.length > 0 && <Actions actions={toolbarActions} />
-      )}
+      {
+        numSelected > 0 ? (
+          <>
+            <Tooltip title="Delete">
+              <Button aria-label="delete">
+                <DeleteIcon />
+              </Button>
+            </Tooltip>
+            <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+              {numSelected} selected
+            </Typography>
+          </>
+        ) : (
+          <>
+            <div className={classes.title} >
+              <Typography variant="h6" id="tableTitle" component="div">
+                {title}
+              </Typography>
+            </div>
+            {
+              filterable && <TextField
+                type="search"
+                fullWidth
+                // size="small"
+                value={keyword}
+                onChange={onKeywordChange} />
+            }
+            {toolbarFilters}
+            {filterable && <Button onClick={onSearchClick}><Search /></Button>}
+            {filterable && <Button onClick={() => {
+              onClearClick()
+              setKeyword("")
+            }}><SearchOff /></Button>}
+            {
+              toolbarActions.length > 0 && <Actions actions={toolbarActions} />
+            }
+          </>)
+      }
     </Toolbar>
   );
 };
@@ -150,6 +181,12 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.table.color
     },
     '& .MuiTableSortLabel-root:hover': {
+      color: theme.palette.table.color
+    },
+    '& .MuiTableSortLabel-root.MuiTableSortLabel-active': {
+      color: theme.palette.table.color
+    },
+    '& .MuiTableSortLabel-root.MuiTableSortLabel-active.MuiTableSortLabel-root.MuiTableSortLabel-active .MuiTableSortLabel-icon': {
       color: theme.palette.table.color
     }
   },
@@ -177,26 +214,34 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({
   dense = false,
-  page = 0,
-  rowsPerPage = 5,
-  onRowsPerPageChange = () => { },
-  onPageChange = () => { },
-  onKeywordSearch = () => { },
+  checkable = true,
+  filterable = true,
   rows = [],
   columns = [],
-  onSortChange = () => { },
   rowActions = [],
   toolbarActions = [],
-  orderBy = "",
+  sort = "",
   order = "asc",
-  title = ""
+  title = "",
+  total = 0,
+  page = 0,
+  rowsPerPage = 10,
+  toolbarFilters = <></>,
+  onPageChange = () => { },
+  onSortChange = () => { },
+  onKeywordSearch = () => { },
+  onRowsPerPageChange = () => { },
+  onSearchClick = () => { },
+  onClearClick = () => { },
 }) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState([]);
-
+  // const [page, setPage] = React.useState(0);
+  // const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    onSortChange(isAsc, property)
+    const isAsc = sort === property && order === 'asc';
+    onSortChange(isAsc ? 'desc' : 'asc', property)
   };
 
   const handleSelectAllClick = (event) => {
@@ -209,6 +254,7 @@ export default ({
   };
 
   const handleClick = (event, _id) => {
+    if (!checkable) return;
     const selectedIndex = selected.indexOf(_id);
     let newSelected = [];
 
@@ -230,15 +276,25 @@ export default ({
 
   const isSelected = (_id) => selected.indexOf(_id) !== -1;
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const handleChangePage = (event, newPage) => {
+    onPageChange(newPage)
+  }
+
+  const handleChangeRowPerPage = (event) => {
+    onRowsPerPageChange(parseInt(event.target.value, 10))
+  }
 
   return (
     <div className={classes.root}>
       <EnhancedTableToolbar
         title={title}
+        filterable={filterable}
         numSelected={selected.length}
         toolbarActions={toolbarActions}
+        toolbarFilters={toolbarFilters}
         onKeywordSearch={onKeywordSearch}
+        onSearchClick={onSearchClick}
+        onClearClick={onClearClick}
       />
       <TableContainer>
         <Table
@@ -249,12 +305,14 @@ export default ({
             classes={classes}
             numSelected={selected.length}
             order={order}
-            orderBy={orderBy}
+            sort={sort}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
             rowCount={rows.length}
             rowActions={rowActions}
             columns={columns}
+            checkable={checkable}
+            filterable={filterable}
           />
           <TableBody>
             {rows.map((row, index) => {
@@ -265,19 +323,17 @@ export default ({
                 <TableRow
                   hover
                   onClick={(event) => handleClick(event, row._id)}
-                  role="checkbox"
-                  aria-checked={isItemSelected}
                   tabIndex={-1}
                   key={row._id}
                   selected={isItemSelected}
                 >
-                  <TableCell padding="checkbox">
+                  {checkable && <TableCell padding="checkbox">
                     <Checkbox
                       color="secondary"
                       checked={isItemSelected}
                       inputProps={{ 'aria-labelledby': labelId }}
                     />
-                  </TableCell>
+                  </TableCell>}
                   {columns.map((column) => (
                     <TableCell
                       key={column.key}
@@ -293,24 +349,26 @@ export default ({
                 </TableRow>
               );
             })}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
+            {/* {emptyRows > 0 && (
+                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )} */}
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        className={classes.pagination}
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={onPageChange}
-        onRowsPerPageChange={onRowsPerPageChange}
-      />
+      {
+        filterable && <TablePagination
+          className={classes.pagination}
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={total}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowPerPage}
+        />
+      }
     </div>
   );
 }

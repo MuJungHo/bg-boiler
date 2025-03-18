@@ -2,12 +2,10 @@ import React from "react";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import Button from "./Button";
-import Tooltip from '@material-ui/core/Tooltip';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { makeStyles } from '@material-ui/core/styles';
 
+import { makeStyles } from '@material-ui/core/styles';
+import { MoreHoriz } from "../../images/icons";
 const useStyles = makeStyles((theme) => ({
   menu: {
     "& .MuiPaper-root": {
@@ -54,20 +52,28 @@ export default ({ actions = [], row = {} }) => {
     setAnchorEl(null)
     action.onClick(event, row)
   }
+
+  actions = actions
+    .filter(action => typeof action.showMenuItem === "function"
+      ? action.showMenuItem(row)
+      : true)
+
   if (actions.length === 0) {
     return '--'
   }
 
   if (actions.length === 1) {
-    return <Tooltip title={actions[0].name}>
-      <IconButton onClick={(event) => actions[0].onClick(event, row)}>
-        {actions[0].icon}
-      </IconButton>
-    </Tooltip>
+    return <Button
+      // size="small"
+      disabled={actions[0].disabled} onClick={(event) => actions[0].onClick(event, row)}>
+      {actions[0].icon}
+    </Button>
   }
   return (
     <div onClick={e => e.stopPropagation()}>
-      <Button className={classes.button} size="small" color="default" onClick={handleActionClick} variant="outlined"><MoreHorizIcon /></Button>
+      <Button
+        className={classes.button}
+        onClick={handleActionClick}><MoreHoriz /></Button>
       <Menu
         open={Boolean(anchorEl)}
         className={classes.menu}
@@ -86,12 +92,13 @@ export default ({ actions = [], row = {} }) => {
         {
           actions
             .map(action => {
-              // console.log(action)
               return <MenuItem
                 key={action.name}
                 onClick={(event) => handleItemClick(event, action)}
                 className={classes.item}
+                disabled={action.disabled}
               >
+
                 {action.icon}
                 <Typography color="textSecondary" variant="caption">{action.name}</Typography>
               </MenuItem>

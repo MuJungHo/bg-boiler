@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
     <div className={classes.root}>
       <Appbar open={open} />
       <Siderbar open={open} setOpen={setOpen} />
-      <main style={{ width: "100%", padding: 24, overflow: 'auto' }}>
+      <main style={{ width: "100%", overflow: 'auto', paddingTop: 6 }}>
         {children}
       </main>
     </div>)

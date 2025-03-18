@@ -1,15 +1,16 @@
-import Home from '../Views/Home';
-
+import User from '../Views/User';
+// import NotFound from '../Views/404';
 import {
-  Home as HomeIcon,
-} from "../images/icons"
+  ManageAccount,
+} from "../images/icons";
+
 
 const routes = [
   {
-    path: "/",
-    name: "home",
-    component: Home,
-    icon: HomeIcon,
+    path: "/user",
+    name: "_user",
+    component: User,
+    icon: ManageAccount,
     sider: true,
     exact: true
   }

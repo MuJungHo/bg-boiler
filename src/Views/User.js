@@ -1,93 +1,138 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
-import { Table, Paper } from "../components/common";
+import { AuthContext } from "../contexts/AuthContext";
+import {
+  Table,
+  Paper,
+} from "../components/common";
 
 import {
   BorderColorSharp,
   Delete,
   AddBox,
-  CloudDownload
 } from '@material-ui/icons';
-const rows = [
-  {
-    _id: "ABC",
-    name: "ABC",
-    identity: "staff",
-    company: "Delta",
-    department: "BASBD",
-    email: "ABC@deltaww.com"
-  },
-  {
-    _id: "DEF",
-    name: "DEF",
-    identity: "staff",
-    company: "Delta",
-    department: "BASBD",
-    email: "DEF@deltaww.com"
-  },
-  {
-    _id: "GHI",
-    name: "GHI",
-    identity: "staff",
-    company: "Delta",
-    department: "BASBD",
-    email: "GHI@deltaww.com"
-  },
-  {
-    _id: "Jay Ciou",
-    name: "Jay Ciou",
-    identity: "VIP",
-    company: "Delta",
-    department: "BASBD",
-    email: "Jay.Ciou@deltaww.com"
-  },
-  {
-    _id: "Uno Lee",
-    name: "Uno Lee",
-    identity: "Guset",
-    company: "",
-    department: "",
-    email: ""
-  },
-  {
-    _id: "UNKNOWN",
-    name: "UNKNOWN",
-    identity: "Stranger",
-    company: "",
-    department: "",
-    email: ""
-  },
-]
+
+// import {
+//   Select,
+//   MenuItem
+// } from '@material-ui/core';
+
+import UserSection from "../components/User/UserSection";
+
+const initFilter = {
+  order: "asc",
+  sort: "name",
+  keyword: "",
+  limit: 5,
+  page: 0,
+}
 
 const User = () => {
-  const { t } = useContext(GlobalContext);
+  const { t, openDialog, closeDialog, openSnackbar, openWarningDialog, authedApi } = useContext(GlobalContext);
+  const [total, setTotal] = React.useState(0);
+  const [filter, setFilter] = React.useState(initFilter);
+
+  const [accountList, setAccountList] = React.useState([]);
+
+  const getUserList = useCallback(async () => {
+    let { rows, count } = await authedApi.getUserList({
+      limit: filter.limit,
+      page: filter.page,
+      keyword: filter.keyword,
+      order: filter.order,
+      sort: filter.sort
+    })
+    const _rows = rows.map(a => ({ ...a, _id: a.id }))
+    setAccountList(_rows)
+    setTotal(count)
+  }, [filter])
+
+  React.useEffect(() => {
+    getUserList()
+  }, [getUserList])
+
+  const openEditUserDialog = (user) => {
+    openDialog({
+      title: t("edit-thing", { thing: t("user") }),
+      section: <UserSection onConfirm={handleEditUserAccount} user={user} />
+    })
+  }
+
+  const openAddUserDialog = () => {
+    openDialog({
+      title: t("add-thing", { thing: t("user") }),
+      section: <UserSection onConfirm={handleAddUserAccount} />
+    })
+  }
+
+  const handleEditUserAccount = async (user) => {
+    await authedApi.putUpdateUser({ data: { ...user }, id: user.id })
+    getUserList()
+    closeDialog()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("edit") })
+    })
+  }
+
+  const handleAddUserAccount = async (user) => {
+    await authedApi.postCreateUser({ data: { ...user } })
+    getUserList()
+    closeDialog()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("add") })
+    })
+  }
+
+  const handleDeleteAccount = async user => {
+    await authedApi.deleteUser({ id: user.id })
+    getUserList()
+    closeDialog()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("delete") })
+    })
+  }
+
+  const handleSetWarningDialog = (user) => {
+    openWarningDialog({
+      title: t("delete-confirmation"),
+      message: t("delete-thing-confirm", { thing: user.name }),
+      onConfirm: () => handleDeleteAccount(user)
+    })
+  }
+
   return (
-    <Paper>
+    <Paper style={{ margin: 20 }}>
       <Table
         title={t("user")}
-        rows={rows}
+        rows={accountList}
         columns={[
           { key: 'name', label: t('name') },
-          { key: 'identity', label: t('identity') },
-          { key: 'company', label: t('company') },
-          { key: 'department', label: t('department') },
+          { key: 'account', label: t('account') },
           { key: 'email', label: t('email') },
         ]}
-        order="asc"
-        orderBy="name"
-        onPageChange={(event, page) => console.log(page)}
-        onRowsPerPageChange={(event) => console.log(parseInt(event.target.value, 10))}
-        onSortChange={(isAsc, property) => console.log(isAsc, property)}
-        onKeywordSearch={(event) => console.log(event.target.value)}
+        checkable={false}
+        order={filter.order}
+        sort={filter.sort}
+        rowsPerPage={filter.limit}
+        page={filter.page}
+        total={total}
+        onSearchClick={getUserList}
+        onClearClick={() => setFilter(initFilter)}
+        onPageChange={(page) => setFilter({ ...filter, page })}
+        onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 0, limit })}
+        onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
+        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={[
-          { name: t('add'), onClick: () => { }, icon: <AddBox /> },
-          { name: t('export'), onClick: () => { }, icon: <CloudDownload /> },
+          { name: t('add'), onClick: openAddUserDialog, icon: <AddBox /> },
         ]}
         rowActions={[
-          { name: t('edit'), onClick: (e, row) => console.log(row), icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => console.log(row), icon: <Delete /> }
+          { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp /> },
+          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}
-        dense
+      // dense
       />
     </Paper>
   );

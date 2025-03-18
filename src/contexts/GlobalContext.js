@@ -1,7 +1,8 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import { createTheme } from '@material-ui/core/styles';
 import { CustomProvider } from 'rsuite';
+import { AuthContext } from './AuthContext';
 import Alert from '@material-ui/lab/Alert';
 import {
   Snackbar,
@@ -20,7 +21,9 @@ import Close from '@material-ui/icons/Close';
 import { lighten_palette, dark_palette } from "../customTheme";
 
 import i18n from '../i18n';
-
+// import { api } from '../utils/apis';
+import WarningSection from '../components/WarningSection';
+import { api } from "../utils/apis";
 import "../style/normalize.css";
 import 'rsuite/dist/rsuite.min.css';
 
@@ -37,6 +40,7 @@ const dark = createTheme({
 const GlobalContext = createContext();
 
 function GlobalProvider({ children, ...rest }) {
+  const { logout, token } = useContext(AuthContext);
   const [locale, setLocale] = useState(localStorage.getItem('locale') || 'zh-TW');
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const [snackBar, setSnackBar] = useState({
@@ -48,9 +52,10 @@ function GlobalProvider({ children, ...rest }) {
   const [dialog, setDialog] = useState({
     title: "",
     open: false,
+    warning: false,
     section: <></>
   })
-  // console.log(typeof dialog.onConfirm === "function")
+  // console.log(dialog)
 
   const dialogStyle = theme === "dark" ? dark_palette.paper : lighten_palette.paper
 
@@ -64,6 +69,19 @@ function GlobalProvider({ children, ...rest }) {
     localStorage.setItem('locale', locale)
   };
 
+  const openWarningDialog = ({
+    title = "",
+    message = "",
+    onConfirm = () => { }
+  }) => {
+    setDialog({
+      title,
+      open: true,
+      warning: true,
+      section: <WarningSection message={message} onConfirm={onConfirm} />
+    })
+  }
+
   const openDialog = (_dialog) => {
     setDialog({
       open: true,
@@ -73,8 +91,10 @@ function GlobalProvider({ children, ...rest }) {
 
   const closeDialog = () => {
     setDialog({
-      ...dialog,
+      title: "",
       open: false,
+      warning: false,
+      section: <></>
     })
   }
 
@@ -85,15 +105,27 @@ function GlobalProvider({ children, ...rest }) {
     })
   }
 
+  const openCatchErrorSnackbar = (message) => {
+    setSnackBar({
+      open: true,
+
+      severity: "error",
+
+      message: i18n(locale)(message)
+    })
+  }
+
   const value = {
     locale,
     t: i18n(locale),
     changeLocale,
     changeTheme,
     openDialog,
+    openWarningDialog,
     closeDialog,
     openSnackbar,
-    theme
+    theme,
+    authedApi: api(logout)
   };
 
   return <GlobalContext.Provider
@@ -121,31 +153,40 @@ function GlobalProvider({ children, ...rest }) {
           </Alert>
         </Snackbar>
         <Dialog
+          // {...dialog}
+          // title=""
+          // warning=""
+          maxWidth={dialog.maxWidth}
           onClose={() => setDialog({ ...dialog, open: false })}
           open={dialog.open}
         >
-          <DialogTitle
+          {dialog.title && <DialogTitle
             disableTypography
             style={{
               backgroundColor: dialogStyle.background,
               color: dialogStyle.color
             }}
-          ><Typography variant="h6">{dialog.title}</Typography>
+          >
+            <span style={{
+              fontSize: dialog.titleFontSize || 16
+            }}>{dialog.title}</span>
             <IconButton style={{
               color: dialogStyle.color,
               position: 'absolute',
               right: 8,
               top: 8,
             }} onClick={() => setDialog({ ...dialog, open: false })}>
-              <Close />
+              <Close style={{
+                fontSize: dialog.titleFontSize || 21
+              }} />
             </IconButton>
-          </DialogTitle>
+          </DialogTitle>}
           {dialog.section}
         </Dialog>
         {children}
       </ThemeProvider>
     </CustomProvider>
-  </GlobalContext.Provider>;
+  </GlobalContext.Provider >;
 }
 
 export { GlobalContext, GlobalProvider };

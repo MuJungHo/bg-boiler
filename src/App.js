@@ -2,13 +2,13 @@ import React from 'react'
 import AppRouter from './routers/AppRouter.js'
 import { AuthProvider } from "./contexts/AuthContext";
 import { GlobalProvider } from "./contexts/GlobalContext";
-
+import 'react-big-calendar/lib/css/react-big-calendar.css'
 const App = () => (
-  <GlobalProvider>
-    <AuthProvider >
+  <AuthProvider >
+    <GlobalProvider>
       <AppRouter />
-    </AuthProvider>
-  </GlobalProvider>
+    </GlobalProvider>
+  </AuthProvider>
 )
 
 export default App
