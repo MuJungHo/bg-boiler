@@ -81,9 +81,9 @@ const Login = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    const { token } = await authedApi.postAuthLogin({ data: { account, password } });
+    // const { token } = await authedApi.postAuthLogin({ data: { account, password } });
 
-    login(token);
+    login("token");
   }
 
   return (
